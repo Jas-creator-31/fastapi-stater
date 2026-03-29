@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+import pytest
 
 app = FastAPI()
 
@@ -18,3 +18,7 @@ app.add_middleware(
     allow_methods=["*"],            # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
     allow_headers=["*"],            # Allow all HTTP request headers
 )
+
+app.get("/")
+async def health_check() -> dict[str, str]:
+    return {"status": "ok"}
