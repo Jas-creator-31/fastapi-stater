@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi import Limiter
+from core.errors.exc_handler import exception_handler
 # from core.rate_limiter_func import rate_limiter_func
 from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
 # import pytest
 
 limiter = Limiter(
@@ -15,10 +15,7 @@ limiter = Limiter(
 app = FastAPI()
 
 app.state.limiter = limiter
-app.add_exception_handler(
-    RateLimitExceeded,
-    _rate_limit_exceeded_handler
-)
+exception_handler(app)
 
 origins = [
   "https://ledgeless-solvolytic-jesenia.ngrok-free.dev",
