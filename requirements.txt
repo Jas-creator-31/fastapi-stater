@@ -3,7 +3,7 @@ annotated-types==0.7.0
 anyio==4.12.1
 argon2-cffi
 slowapi
-pyjwt
+pyjwt[crypto]
 loguru
 pytest
 certifi==2026.1.4
@@ -52,3 +52,4 @@ uvicorn==0.40.0
 uvloop==0.22.1
 watchfiles==1.1.1
 websockets==16.0
+testcontainers[postgres]
