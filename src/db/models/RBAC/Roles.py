@@ -1,12 +1,12 @@
 from sqlalchemy import text
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
-from db.base import Base
+from src.db.base import Base
 from uuid import UUID
 
 
 class Roles(Base):
-    __tablename__ = 'roles'
+    __tablename__ = 'roles' # type: ignore
 
     role_id: Mapped[UUID] = mapped_column(
         PG_UUID(as_uuid=True),

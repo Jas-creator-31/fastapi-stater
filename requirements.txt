@@ -4,6 +4,7 @@ anyio==4.12.1
 argon2-cffi
 slowapi
 pyjwt[crypto]
+user-agents
 loguru
 pytest
 certifi==2026.1.4
@@ -53,3 +54,4 @@ uvloop==0.22.1
 watchfiles==1.1.1
 websockets==16.0
 testcontainers[postgres]
+redis[hiredis]

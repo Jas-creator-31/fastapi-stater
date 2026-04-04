@@ -1,20 +1,22 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter
-from core.errors.exc_handler import exception_handler
+from src.core.errors.exc_handler import exception_handler
+from src.core.middleware.register_middleware import register_middleware
 # from core.rate_limiter_func import rate_limiter_func
 from slowapi.util import get_remote_address
 # import pytest
 
 limiter = Limiter(
     key_func=get_remote_address,
-    strategy="moving_window",
+    strategy="moving-window",
     default_limits=['200/day']
 )
 
 app = FastAPI()
 
 app.state.limiter = limiter
+register_middleware(app)
 exception_handler(app)
 
 origins = [
@@ -32,7 +34,7 @@ app.add_middleware(
     allow_headers=["*"],            # Allow all HTTP request headers
 )
 
-app.get("/")
-limiter.limit('5/hour')
+@app.get("/")
+@limiter.exempt # type: ignore
 async def health_check() -> dict[str, str]:
     return {"status": "ok"}

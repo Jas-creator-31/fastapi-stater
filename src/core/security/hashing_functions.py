@@ -1,9 +1,11 @@
+from typing import Literal
+
 from argon2 import PasswordHasher
 
 ph = PasswordHasher()
 
-def hash_password(plain_password):
-    return ph.hash(plain_password)
+async def hash(plain: str) -> str:
+    return ph.hash(plain)
 
-def verify_password(plain_password, hashed_password):
-    return ph.verify(plain_password, hashed_password)
+async def verify_hash(plain: str, hashed: str) -> Literal[True]:
+    return ph.verify(plain, hashed)

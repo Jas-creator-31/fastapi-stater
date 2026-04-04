@@ -1,12 +1,12 @@
-from sqlalchemy import text, DATETIME
+from sqlalchemy import text, DateTime
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
-from db.base import Base
+from src.db.base import Base
 from uuid import UUID
-from datetime import datetime, timezone
+from datetime import datetime
 
 class AppUser(Base):
-    __tablename__ = 'app_users'
+    __tablename__ = 'app_users' # type: ignore
 
     user_id: Mapped[UUID] = mapped_column(
         PG_UUID(as_uuid=True),
@@ -29,16 +29,16 @@ class AppUser(Base):
     )
 
     created_at: Mapped[datetime] = mapped_column(
-        DATETIME(timezone=True),
+        DateTime(timezone=True),
         server_default=text(
             "CURRENT_TIMESTAMP"
         ),
     )
 
     deleted_at: Mapped[datetime] = mapped_column(
-        DATETIME(timezone=True),
+        DateTime(timezone=True),
         nullable=True,
-        server_default=text("DEFAULT NULL")
+        server_default=text("NULL")
     )
 
 

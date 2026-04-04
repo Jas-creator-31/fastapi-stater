@@ -1,11 +1,11 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
-from db.base import Base
+from src.db.base import Base
 from uuid import UUID
 
 class Permissions(Base):
-    __tablename__ = "permissions"
+    __tablename__ = "permissions" # type: ignore
 
     permission_id: Mapped[UUID] = mapped_column(
         PG_UUID(as_uuid=True),
