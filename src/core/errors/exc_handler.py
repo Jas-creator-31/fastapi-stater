@@ -3,9 +3,8 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 
-from src.core.errors.domainErrors import (
-    AuthenticationError
-)
+from src.core.errors.domainErrors import AuthenticationError
+
 
 def exception_handler(app: FastAPI) -> None:
     @app.exception_handler(AuthenticationError)
@@ -17,5 +16,5 @@ def exception_handler(app: FastAPI) -> None:
 
     app.add_exception_handler(
         RateLimitExceeded,
-        _rate_limit_exceeded_handler # type: ignore
+        _rate_limit_exceeded_handler,  # type: ignore
     )

@@ -1,5 +1,6 @@
 from session import AsyncSessionLocal
 
+
 async def get_async_db():
     async with AsyncSessionLocal() as db:
         try:

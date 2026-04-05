@@ -6,12 +6,12 @@ from uuid import UUID
 
 
 class Roles(Base):
-    __tablename__ = 'roles' # type: ignore
+    __tablename__ = "roles"  # type: ignore
 
     role_id: Mapped[UUID] = mapped_column(
         PG_UUID(as_uuid=True),
         primary_key=True,
-        server_default=text("gen_random_uuid()")
+        server_default=text("gen_random_uuid()"),
     )
 
     name: Mapped[str] = mapped_column(

@@ -1,10 +1,4 @@
-from sqlalchemy.ext.asyncio import (
-    
-    create_async_engine,
-    async_sessionmaker,
-    AsyncSession
-
-)
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.engine import URL
 from dotenv import load_dotenv
 import os
@@ -35,5 +29,5 @@ AsyncSessionLocal = async_sessionmaker(
     autocommit=False,
     autoflush=False,
     expire_on_commit=False,
-    class_=AsyncSession
+    class_=AsyncSession,
 )

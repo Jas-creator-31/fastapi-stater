@@ -1,4 +1,4 @@
-from src.features.auth.JWT import create_jwt_payload
+from src.features.auth.create_jwt_payload import create_jwt_payload
 from dotenv import load_dotenv
 import os
 import jwt
