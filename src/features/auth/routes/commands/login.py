@@ -5,9 +5,9 @@ from src.features.auth.services.auth_service import AuthService
 from src.main import limiter
 from src.features.auth.models import LoginPayload
 
-router = APIRouter()
+route = APIRouter()
 
-@router.post('/login')
+@route.post('/login')
 @limiter.limit('5/minute')
 async def login(
     res: Response,

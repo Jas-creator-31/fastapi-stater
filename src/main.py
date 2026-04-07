@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter
 from src.core.errors.exc_handler import exception_handler
 from src.core.middleware.register_middleware import register_middleware
+from src.features.auth.routes.auth import auth_router
 # from core.rate_limiter_func import rate_limiter_func
 from slowapi.util import get_remote_address
 # import pytest
@@ -16,8 +17,6 @@ limiter = Limiter(
 app = FastAPI()
 
 app.state.limiter = limiter
-register_middleware(app)
-exception_handler(app)
 
 origins = [
   "https://ledgeless-solvolytic-jesenia.ngrok-free.dev",
@@ -33,6 +32,11 @@ app.add_middleware(
     allow_methods=["*"],            # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
     allow_headers=["*"],            # Allow all HTTP request headers
 )
+
+register_middleware(app)
+exception_handler(app)
+
+app.include_router(auth_router)
 
 @app.get("/")
 @limiter.exempt # type: ignore
