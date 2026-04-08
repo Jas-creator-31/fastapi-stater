@@ -1,6 +1,8 @@
 from pydantic import BaseModel, EmailStr, ConfigDict
 from typing import Optional
-
+from uuid import UUID
+from datetime import datetime
+from src.features.auth.types import token_type
 class LoginPayload(BaseModel):
     email: EmailStr
     password: str
@@ -19,3 +21,12 @@ class TokenServiceReturn(BaseModel):
     access_token: str
     refresh_token: str
     hashed_refresh_token: str
+
+class Token(BaseModel):
+    sub: UUID
+    iat: datetime
+    exp: datetime
+    type: token_type
+    sid: UUID
+    jti: UUID
+

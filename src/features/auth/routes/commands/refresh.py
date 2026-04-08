@@ -1,30 +1,27 @@
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Request, Response
 from redis.asyncio import Redis
-from sqlalchemy.ext.asyncio import AsyncSession
-from src.db.deps import get_async_db
 from src.features.auth.services.auth_service import AuthService
+from src.db.deps import get_async_db
 from src.infra.redis.client import get_redis
 from src.main import limiter
-from src.features.auth.models import LoginPayload
+from sqlalchemy.ext.asyncio import AsyncSession
 
 route = APIRouter()
 
-@route.post('/login')
-@limiter.limit('5/minute')
-async def login(
+@route.post("/refresh")
+@limiter.limit('10/hour')
+async def refresh(
+    req: Request,
     res: Response,
-    payload: LoginPayload,
     db: AsyncSession = Depends(get_async_db),
-	redis: Redis = Depends(get_redis)
+    redis: Redis = Depends(get_redis)
 ):
-
-	service = AuthService(db, redis)
-
-	(access_token, refresh_token) = await service.login(payload)
-
-	res.set_cookie(
+    refresh_token = req.cookies.get("refresh_token")
+    service = AuthService(db, redis)
+    tokens = await service.refresh(refresh_token)
+    res.set_cookie(
         key="access_token",
-        value=access_token,
+        value=tokens.access_token,
         max_age=900,
         path="/",
         secure=True,
@@ -32,9 +29,9 @@ async def login(
         httponly=True,
     )
     
-	res.set_cookie(
+    res.set_cookie(
         key="refresh_token",
-        value=refresh_token,
+        value=tokens.refresh_token,
         max_age=604800,
         path="/",
         secure=True,
@@ -42,5 +39,4 @@ async def login(
         httponly=True,
     )
 
-	return {"status": "success"}
-
+    return {"status": "success"}

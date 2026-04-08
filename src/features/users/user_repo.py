@@ -14,7 +14,7 @@ class UserRepo:
             .where(
                 and_(
                         AppUser.email == email,
-                        AppUser.deleted_at == None
+                        AppUser.deleted_at == None  # noqa: E711
                     )
                 )
             )
