@@ -16,7 +16,7 @@ async def get_redis():
         db=int(redis_db),  # type: ignore
         decode_responses=True
     )
-    r.config_set("save", "900 100")
+    r.config_set("save", "900 1 300 10 60 10000")
     try:
         yield r
     finally:
