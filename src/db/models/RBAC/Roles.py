@@ -16,6 +16,7 @@ class Roles(Base):
 
     name: Mapped[str] = mapped_column(
         nullable=False,
+        index=True,
     )
 
     description: Mapped[str] = mapped_column(

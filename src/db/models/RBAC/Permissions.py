@@ -13,6 +13,7 @@ class Permissions(Base):
     permission_slang: Mapped[str] = mapped_column(
         String(30),  # basic limit can be changed for application specific needs
         nullable=False,
+        index=True,
     )
 
     description: Mapped[str] = mapped_column(String(200), nullable=False)
