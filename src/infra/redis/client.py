@@ -14,7 +14,9 @@ async def get_redis():
         host=redis_host,  # type: ignore
         port=int(redis_port),  # type: ignore
         db=int(redis_db),  # type: ignore
+        decode_responses=True
     )
+    r.config_set("save", "900 100")
     try:
         yield r
     finally:
