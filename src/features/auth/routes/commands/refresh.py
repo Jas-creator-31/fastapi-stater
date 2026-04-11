@@ -3,20 +3,21 @@ from redis.asyncio import Redis
 from src.features.auth.services.auth_service import AuthService
 from src.db.deps import get_async_db
 from src.infra.redis.client import get_redis
-from src.main import limiter
 from sqlalchemy.ext.asyncio import AsyncSession
+from src.core.rate_limiting.limiter import limiter
+
 
 route = APIRouter()
 
 @route.post("/refresh")
-@limiter.limit('10/hour')
+@limiter.limit('30/hour')
 async def refresh(
-    req: Request,
+    request: Request,
     res: Response,
     db: AsyncSession = Depends(get_async_db),
     redis: Redis = Depends(get_redis)
 ):
-    refresh_token = req.cookies.get("refresh_token")
+    refresh_token = request.cookies.get("refresh_token")
     service = AuthService(db, redis)
     tokens = await service.refresh(refresh_token)
     res.set_cookie(
