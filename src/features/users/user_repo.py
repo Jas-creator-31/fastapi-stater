@@ -1,12 +1,12 @@
 from pydantic import EmailStr
 from sqlalchemy import select, and_
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from src.db.models.AppUsers import AppUser
 from src.features.users.user import User
 
 class UserRepo:
-    def __init__(self, db: Session) -> None:
-        self.db: Session = db
+    def __init__(self, db: AsyncSession) -> None:
+        self.db: AsyncSession = db
 
     async def exist(self, email: EmailStr):   
         stmt = (
@@ -18,7 +18,10 @@ class UserRepo:
                     )
                 )
             )
-        user = self.db.scalars(stmt).one()
+        result = await self.db.execute(stmt)
+        user = result.scalars().one_or_none()
+        if user is None:
+            return None
         return User(
             user
         )
