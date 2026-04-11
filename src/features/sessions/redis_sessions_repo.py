@@ -15,7 +15,7 @@ class RedisSessionsRepo:
     
     async def update_refresh_hash(self, session_id, new_refresh_hash):
         pipe = self.redis.pipeline(transaction=True)
-        pipe.hset(f"auth:session:{session_id}", "refresh_hesh", new_refresh_hash)
+        pipe.hset(f"auth:session:{session_id}", "refresh_hash", new_refresh_hash)
         pipe.expire(f"auth:session:{session_id}", 604800)
         await pipe.execute()
 

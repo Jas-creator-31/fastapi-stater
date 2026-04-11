@@ -32,7 +32,7 @@ class TokenService:
     async def _create_token_payload(self, user_id, sid, type: token_type):
         now = datetime.now(timezone.utc)
 
-        exp_time: int = 604800 if type == "access" else 900
+        exp_time: int = 900 if type == "access" else 604800
 
         token_payload = {
             "sub": user_id,

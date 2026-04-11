@@ -18,7 +18,10 @@ class UserRepo:
                     )
                 )
             )
-        user = self.db.scalars(stmt).one()
+        result = await self.db.execute(stmt)
+        user = result.scalars().one_or_none()
+        if user is None:
+            return None
         return User(
             user
         )
