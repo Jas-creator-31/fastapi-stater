@@ -1,5 +1,3 @@
-from datetime import datetime, timezone, timedelta
-
 from redis.asyncio import Redis
 
 from src.features.sessions.models import RedisSessionsSeviceReturn
@@ -15,11 +13,9 @@ class RedisSissionsService:
         
     async def _create_redis_value(self, user_id, refresh_hash):
         request_metadata = request_metadata_context.get()
-        now = datetime.now(timezone.utc)
         redis_value = {
             'user_id': user_id,
             'refresh_hash': refresh_hash,
-            'absolute_expiry': now + timedelta(days=30),
             'ip_address': request_metadata.client_ip,
             'browser': request_metadata.user_agent.browser,
             'device_info': request_metadata.user_agent.device,
@@ -50,7 +46,7 @@ class RedisSissionsService:
             await 
             redis_sessions_repo
             .set_token(
-                tokens, 
+                tokens.sid, 
                 redis_value # type: ignore
             )
         )
